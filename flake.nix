@@ -53,11 +53,22 @@
         networking.firewall.allowedTCPPorts = [ 22 80 443 ];
       };
 
+      common-nix = { config, ... }: {
+        nix = {
+          extraOptions = ''
+            experimental-features = nix-command flakes
+          '';
+
+          registry.nixpkgs.flake = nixpkgs;
+        };
+      };
+
       common = { config, lib, ... }: {
         imports = with self.nixosModules; [
           common-hardware
           common-firewall
           common-ssh
+          common-nix
         ];
 
         system.configurationRevision = lib.mkIf (self ? rev) self.rev;
