@@ -31,7 +31,14 @@
           { device = "/dev/disk/by-label/swap"; }
         ];
 
-        networking.useDHCP = lib.mkDefault true;
+        networking = {
+          useDHCP = lib.mkDefault true;
+
+          defaultGateway6 = {
+            address = "fe80::1";
+            interface = "enp4s0";
+          };
+        };
 
         powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
         hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
@@ -83,6 +90,14 @@
 
         modules = with self.nixosModules; [
           common
+          ({ config, ... }: {
+            networking.interfaces.enp4s0.ipv6.addresses = [
+              {
+                address = "2a01:4f8:162:3248::";
+                prefixLength = 64;
+              }
+            ];
+          })
         ];
       };
 
@@ -91,6 +106,14 @@
 
         modules = with self.nixosModules; [
           common
+          ({ config, ... }: {
+            networking.interfaces.enp4s0.ipv6.addresses = [
+              {
+                address = "2a01:4f8:171:3849::";
+                prefixLength = 64;
+              }
+            ];
+          })
         ];
       };
     };
