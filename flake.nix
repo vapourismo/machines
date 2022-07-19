@@ -2,11 +2,11 @@
   description = "NixOS Machines";
 
   inputs = {
-    # flake-utils.url = github:numtide/flake-utils;
     nixpkgs.url = github:NixOS/nixpkgs;
+    flake-utils.url = github:numtide/flake-utils;
   };
 
-  outputs = { self, nixpkgs }: {
+  outputs = { self, nixpkgs, flake-utils }: {
     nixosModules = {
       common-hardware = { config, lib, modulesPath, ... }: {
         imports = [
@@ -106,41 +106,82 @@
           settings.trusted-users = [ "nix-ssh" ];
         };
       };
+
+      host-ded1 = { config, ... }: {
+        imports = with self.nixosModules; [
+          common
+          serve-nix-store
+        ];
+
+        networking.interfaces.enp4s0.ipv6.addresses = [
+          {
+            address = "2a01:4f8:162:3248::";
+            prefixLength = 64;
+          }
+        ];
+      };
+
+      host-ded2 = { config, ... }: {
+        imports = with self.nixosModules; [
+          common
+        ];
+
+        networking.interfaces.enp4s0.ipv6.addresses = [
+          {
+            address = "2a01:4f8:171:3849::";
+            prefixLength = 64;
+          }
+        ];
+      };
     };
 
     nixosConfigurations = {
       ded1 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
-        modules = with self.nixosModules; [
-          common
-          serve-nix-store
-          ({ config, ... }: {
-            networking.interfaces.enp4s0.ipv6.addresses = [
-              {
-                address = "2a01:4f8:162:3248::";
-                prefixLength = 64;
-              }
-            ];
-          })
-        ];
+        modules = [ self.nixosModules.host-ded1 ];
       };
 
       ded2 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
-        modules = with self.nixosModules; [
-          common
-          ({ config, ... }: {
-            networking.interfaces.enp4s0.ipv6.addresses = [
-              {
-                address = "2a01:4f8:171:3849::";
-                prefixLength = 64;
-              }
-            ];
-          })
-        ];
+        modules = [ self.nixosModules.host-ded2 ];
       };
     };
-  };
+
+    colmena = {
+      meta = {
+        nixpkgs = nixpkgs.legacyPackages."x86_64-linux";
+
+        name = "Available Servers";
+      };
+
+      ded1 = _: {
+        deployment = {
+          targetHost = "ded1.servers.hwlium.com";
+          tags = [ "ded" ];
+          buildOnTarget = true;
+        };
+
+        imports = [ self.nixosModules.host-ded1 ];
+      };
+
+      ded2 = _: {
+        deployment = {
+          targetHost = "ded2.servers.hwlium.com";
+          tags = [ "ded" ];
+          buildOnTarget = true;
+        };
+
+        imports = [ self.nixosModules.host-ded2 ];
+      };
+    };
+  } // flake-utils.lib.eachDefaultSystem (system: {
+    devShell = nixpkgs.legacyPackages.${system}.mkShell {
+      buildInputs = with nixpkgs.legacyPackages.${system}; [
+        colmena
+        nixpkgs-fmt
+      ];
+    };
+  });
 }
