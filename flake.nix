@@ -124,14 +124,11 @@
         };
       };
 
-      postgresql-database = { config, pkgs, ... }: {
+      postgresql-database = { config, pkgs, lib, ... }: {
         security.acme.certs."alpha.database.hwlium.com" = {
           group = "postgres";
           webroot = "/var/www/alpha.database.hwlium.com";
-          postRun = ''
-            chown postgres:postgres /var/lib/acme/alpha.database.hwlium.com/*.pem
-            systemctl restart postgresql.service
-          '';
+          reloadServices = [ "postgresql.service" ];
         };
 
         services.nginx = {
@@ -159,8 +156,8 @@
           settings = {
             password_encryption = "scram-sha-256";
             ssl = true;
-            ssl_cert_file = "/var/lib/acme/alpha.database.hwlium.com/cert.pem";
-            ssl_key_file = "/var/lib/acme/alpha.database.hwlium.com/key.pem";
+            ssl_cert_file = "/run/credentials/postgresql.service/cert.pem";
+            ssl_key_file = "/run/credentials/postgresql.service/key.pem";
           };
 
           ensureDatabases = [ "hrel" ];
@@ -172,6 +169,16 @@
                 "DATABASE hrel" = "ALL PRIVILEGES";
               };
             }
+          ];
+        };
+
+        systemd.services.postgresql = {
+          requires = [ "acme-alpha.database.hwlium.com.service" ];
+          after = [ "acme-alpha.database.hwlium.com.service" ];
+
+          serviceConfig.LoadCredential = [
+            "cert.pem:/var/lib/acme/alpha.database.hwlium.com/cert.pem"
+            "key.pem:/var/lib/acme/alpha.database.hwlium.com/key.pem"
           ];
         };
 
