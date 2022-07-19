@@ -31,17 +31,29 @@
           { device = "/dev/disk/by-label/swap"; }
         ];
 
+        powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
+        hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      };
+
+      common-network = { config, lib, ... }: {
         networking = {
           useDHCP = lib.mkDefault true;
+          nameservers = [ "1.1.1.1" "8.8.8.8" ];
+
+          firewall.allowedTCPPorts = [ 22 80 443 ];
 
           defaultGateway6 = {
             address = "fe80::1";
             interface = "enp4s0";
           };
-        };
 
-        powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
-        hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+          vlans = {
+            vs1 = {
+              id = 4000;
+              interface = "enp4s0";
+            };
+          };
+        };
       };
 
       common-ssh = { config, ... }: {
@@ -56,10 +68,6 @@
           # Desktop
           "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKKRTgvRNbWuT85F9/qKZy9cJ47bC7kZhEgDz/dC24F+WQC7sV+MrimPb7cuyRyL7YAgf5kebM97eUa1rMNYfX+avD17pCW/3bVu37VPN+s3UHECSFN0BNTT0D0sIWXHcJdZkoa2UUEMCPzzjBpOQLNtoUQhdkrwJIS7KMjw9DJWf6gCGzUEYW2mzhnIzL5OeBHD4IGLKaIzAANKxALDIugfUhB3WlMUidhlu1TyaXvqsJ7Vj2OfX2Dv75wZIjeBRZse4Yq9fMWjiUcZds88eBX6y7ts7zzv0jd1pbThc7PIQLOsHAOapOFElS6gZlLOf+9k9f9j3LPFi8xu07OZCP"
         ];
-      };
-
-      common-firewall = { config, ... }: {
-        networking.firewall.allowedTCPPorts = [ 22 80 443 ];
       };
 
       common-nix = { config, ... }: {
@@ -77,7 +85,7 @@
       common = { config, lib, ... }: {
         imports = with self.nixosModules; [
           common-hardware
-          common-firewall
+          common-network
           common-ssh
           common-nix
         ];
@@ -107,6 +115,26 @@
         };
       };
 
+      postgresql-database = { config, pkgs, ... }: {
+        services.postgresql = {
+          enable = true;
+          package = pkgs.postgresql_13;
+
+          enableTCPIP = true;
+          authentication = ''
+            local all all trust
+            host all all 127.0.0.1/32 trust
+            host all all ::1/128 trust
+          '';
+
+          initialScript = pkgs.writeText "backend-initScript" ''
+            CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
+            CREATE DATABASE nixcloud;
+            GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
+          '';
+        };
+      };
+
       host-ded1 = { config, ... }: {
         imports = with self.nixosModules; [
           common
@@ -116,12 +144,21 @@
         networking = {
           hostName = "ded1";
 
-          interfaces.enp4s0.ipv6.addresses = [
-            {
-              address = "2a01:4f8:162:3248::";
-              prefixLength = 64;
-            }
-          ];
+          interfaces = {
+            enp4s0.ipv6.addresses = [
+              {
+                address = "2a01:4f8:162:3248::";
+                prefixLength = 64;
+              }
+            ];
+
+            vs1.ipv4.addresses = [
+              {
+                address = "10.0.0.1";
+                prefixLength = 24;
+              }
+            ];
+          };
         };
       };
 
@@ -133,12 +170,21 @@
         networking = {
           hostName = "ded2";
 
-          interfaces.enp4s0.ipv6.addresses = [
-            {
-              address = "2a01:4f8:171:3849::";
-              prefixLength = 64;
-            }
-          ];
+          interfaces = {
+            enp4s0.ipv6.addresses = [
+              {
+                address = "2a01:4f8:171:3849::";
+                prefixLength = 64;
+              }
+            ];
+
+            vs1.ipv4.addresses = [
+              {
+                address = "10.0.0.2";
+                prefixLength = 24;
+              }
+            ];
+          };
         };
       };
     };
