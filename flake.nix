@@ -14,15 +14,9 @@
             builtins.removeAttrs (self.colmena.${name} args) [ "deployment" ];
         in
         {
-          "ded1.servers.hwlium.com" = nixpkgs.lib.nixosSystem {
+          "fi1.servers.hwlium.com" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
-            modules = [ (fromColmena "ded1.servers.hwlium.com") ];
-            specialArgs = { inherit inputs; };
-          };
-
-          "ded2.servers.hwlium.com" = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            modules = [ (fromColmena "ded2.servers.hwlium.com") ];
+            modules = [ (fromColmena "fi1.servers.hwlium.com") ];
             specialArgs = { inherit inputs; };
           };
         };
@@ -34,24 +28,14 @@
           specialArgs = { inherit inputs; };
         };
 
-        "ded1.servers.hwlium.com" = _: {
+        "fi1.servers.hwlium.com" = _: {
           deployment = {
-            targetHost = "ded1.servers.hwlium.com";
-            tags = [ "servers.hwlium.com" ];
-            buildOnTarget = true;
-          };
-
-          imports = [ ./hosts/ded1.servers.hwlium.com.nix ];
-        };
-
-        "ded2.servers.hwlium.com" = _: {
-          deployment = {
-            targetHost = "ded2.servers.hwlium.com";
+            targetHost = "fi1.servers.hwlium.com";
             tags = [ "ded" ];
             buildOnTarget = true;
           };
 
-          imports = [ ./hosts/ded2.servers.hwlium.com.nix ];
+          imports = [ ./hosts/fi1.servers.hwlium.com.nix ];
         };
       };
     } // flake-utils.lib.eachDefaultSystem (system: {

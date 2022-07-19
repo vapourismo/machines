@@ -2,9 +2,11 @@
   networking = {
     domain = "servers.hwlium.com";
 
-    vlans.vs1 = {
-      id = 4000;
-      interface = "enp4s0";
+    useDHCP = true;
+
+    defaultGateway6 = {
+      address = "fe80::1";
+      interface = "enp98s0f0";
     };
   };
 }

@@ -8,21 +8,14 @@
   ];
 
   networking = {
-    hostName = "ded1";
-    hostId = "dfc13c64";
+    hostName = "fi1";
+    hostId = "9cd372da";
 
     interfaces = {
-      enp4s0.ipv6.addresses = [
+      enp98s0f0.ipv6.addresses = [
         {
-          address = "2a01:4f8:162:3248::";
+          address = "2a01:4f9:4a:24ed::";
           prefixLength = 64;
-        }
-      ];
-
-      vs1.ipv4.addresses = [
-        {
-          address = "10.0.0.1";
-          prefixLength = 24;
         }
       ];
     };
