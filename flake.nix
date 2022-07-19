@@ -9,17 +9,16 @@
   outputs = { self, nixpkgs, flake-utils }@inputs:
     {
       nixosConfigurations =
-        let
-          fromColmena = name: args:
-            builtins.removeAttrs (self.colmena.${name} args) [ "deployment" ];
-        in
-        {
-          "fi1.servers.hwlium.com" = nixpkgs.lib.nixosSystem {
+        # Import NixOS configurations from Colmena configurations.
+        nixpkgs.lib.mapAttrs
+          (name: mkConfig: nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
-            modules = [ (fromColmena "fi1.servers.hwlium.com") ];
+            modules = [
+              (args: builtins.removeAttrs (mkConfig args) [ "deployment" ])
+            ];
             specialArgs = { inherit inputs; };
-          };
-        };
+          })
+          (nixpkgs.lib.filterAttrs (_: nixpkgs.lib.isFunction) self.colmena);
 
       colmena = {
         meta = {
