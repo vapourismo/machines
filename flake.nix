@@ -30,7 +30,7 @@
         "fi1.servers.hwlium.com" = _: {
           deployment = {
             targetHost = "fi1.servers.hwlium.com";
-            tags = [ "ded" ];
+            tags = [ "servers.hwlium.com" ];
             buildOnTarget = true;
           };
 
