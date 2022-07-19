@@ -125,22 +125,29 @@
           enableTCPIP = true;
           authentication = ''
             local all all trust
-            host all all 127.0.0.1/32 trust
-            host all all ::1/128 trust
+            host all all all scram-sha-256
           '';
 
-          initialScript = pkgs.writeText "backend-initScript" ''
-            CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
-            CREATE DATABASE nixcloud;
-            GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
-          '';
+          ensureDatabases = [ "hrel" ];
+
+          ensureUsers = [
+            {
+              name = "hrel";
+              ensurePermissions = {
+                "DATABASE hrel" = "ALL PRIVILEGES";
+              };
+            }
+          ];
         };
+
+        networking.firewall.allowedTCPPorts = [ 5432 ];
       };
 
       host-ded1 = { config, ... }: {
         imports = with self.nixosModules; [
           common
           serve-nix-store
+          postgresql-database
         ];
 
         networking = {
