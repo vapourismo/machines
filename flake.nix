@@ -99,6 +99,13 @@
         };
       };
 
+      acme = { config, ... }: {
+        security.acme = {
+          acceptTerms = true;
+          defaults.email = "letsencrypt@hwlium.com";
+        };
+      };
+
       serve-nix-store = { config, ... }: {
         nix = {
           sshServe = {
@@ -118,15 +125,43 @@
       };
 
       postgresql-database = { config, pkgs, ... }: {
+        security.acme.certs."alpha.database.hwlium.com" = {
+          group = "postgres";
+          webroot = "/var/www/alpha.database.hwlium.com";
+          postRun = ''
+            chown postgres:postgres /var/lib/acme/alpha.database.hwlium.com/*.pem
+            systemctl restart postgresql.service
+          '';
+        };
+
+        services.nginx = {
+          enable = true;
+
+          virtualHosts."alpha.database.hwlium.com" = {
+            root = "/var/www/alpha.database.hwlium.com";
+          };
+        };
+
         services.postgresql = {
           enable = true;
           package = pkgs.postgresql_13;
 
           enableTCPIP = true;
           authentication = ''
+            # Local
             local all all trust
+            host all all 127.0.0.1/32 trust
+
+            # Remote
             host all all all scram-sha-256
           '';
+
+          settings = {
+            password_encryption = "scram-sha-256";
+            ssl = true;
+            ssl_cert_file = "/var/lib/acme/alpha.database.hwlium.com/cert.pem";
+            ssl_key_file = "/var/lib/acme/alpha.database.hwlium.com/key.pem";
+          };
 
           ensureDatabases = [ "hrel" ];
 
@@ -147,6 +182,7 @@
         imports = with self.nixosModules; [
           common
           serve-nix-store
+          acme
           postgresql-database
         ];
 
