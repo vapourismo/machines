@@ -113,12 +113,16 @@
           serve-nix-store
         ];
 
-        networking.interfaces.enp4s0.ipv6.addresses = [
-          {
-            address = "2a01:4f8:162:3248::";
-            prefixLength = 64;
-          }
-        ];
+        networking = {
+          hostName = "ded1";
+
+          interfaces.enp4s0.ipv6.addresses = [
+            {
+              address = "2a01:4f8:162:3248::";
+              prefixLength = 64;
+            }
+          ];
+        };
       };
 
       host-ded2 = { config, ... }: {
@@ -126,12 +130,16 @@
           common
         ];
 
-        networking.interfaces.enp4s0.ipv6.addresses = [
-          {
-            address = "2a01:4f8:171:3849::";
-            prefixLength = 64;
-          }
-        ];
+        networking = {
+          hostName = "ded2";
+
+          interfaces.enp4s0.ipv6.addresses = [
+            {
+              address = "2a01:4f8:171:3849::";
+              prefixLength = 64;
+            }
+          ];
+        };
       };
     };
 
