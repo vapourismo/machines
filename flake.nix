@@ -37,6 +37,8 @@
 
       common-network = { config, lib, ... }: {
         networking = {
+          domain = "servers.hwlium.com";
+
           useDHCP = lib.mkDefault true;
           nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
@@ -143,6 +145,7 @@
 
         networking = {
           hostName = "ded1";
+          hostId = "dfc13c64";
 
           interfaces = {
             enp4s0.ipv6.addresses = [
@@ -169,6 +172,7 @@
 
         networking = {
           hostName = "ded2";
+          hostId = "fd1d7a89";
 
           interfaces = {
             enp4s0.ipv6.addresses = [
