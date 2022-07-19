@@ -82,7 +82,11 @@
           common-nix
         ];
 
-        system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+        system = {
+          stateVersion = "22.11";
+
+          configurationRevision = lib.mkIf (self ? rev) self.rev;
+        };
       };
 
       serve-nix-store = { config, ... }: {
