@@ -3,6 +3,7 @@
     ./networking.nix
     ./ssh.nix
     ./nix.nix
+    ./virtualisation.nix
   ];
 
   system = {
