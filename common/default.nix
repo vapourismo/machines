@@ -4,6 +4,7 @@
     ./ssh.nix
     ./nix.nix
     ./virtualisation.nix
+    ./fail2ban.nix
   ];
 
   system = {
