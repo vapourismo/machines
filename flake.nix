@@ -34,12 +34,6 @@
             buildOnTarget = true;
 
             keys = {
-              "datadog-api-key" = {
-                keyCommand = [ "cat" "./secrets/datadog-api-key" ];
-                user = "datadog";
-                group = "datadog";
-              };
-
               "nix-store.sec" = {
                 keyCommand = [ "cat" "./secrets/nix-store.sec" ];
               };
