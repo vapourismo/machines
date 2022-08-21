@@ -42,8 +42,6 @@
 
               "nix-store.sec" = {
                 keyCommand = [ "cat" "./secrets/nix-store.sec" ];
-                # user = "nix-serve";
-                # group = "nix-serve";
               };
             };
           };
