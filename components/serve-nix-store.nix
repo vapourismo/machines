@@ -14,4 +14,32 @@
 
     settings.trusted-users = [ "nix-ssh" ];
   };
+
+  services.nix-serve = {
+    enable = true;
+    secretKeyFile = "/run/keys/nix-store.sec";
+    bindAddress = "127.0.0.1";
+    port = 8580;
+  };
+
+  services.nginx = {
+    enable = true;
+
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+
+    virtualHosts."nix.cache.hwlium.com" = {
+      enableACME = true;
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${builtins.toString config.services.nix-serve.port}/";
+        extraConfig = ''
+          proxy_ssl_server_name on;
+        '';
+      };
+    };
+  };
+
+  networking.firewall.allowedTCPPorts = [ 443 ];
 }
