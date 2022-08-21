@@ -5,6 +5,7 @@
     ../common
     ../components/serve-nix-store.nix
     ../components/postgresql-database.nix
+    ../components/datadog-agent.nix
   ];
 
   networking = {

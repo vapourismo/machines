@@ -32,6 +32,14 @@
             targetHost = "fi1.servers.hwlium.com";
             tags = [ "servers.hwlium.com" ];
             buildOnTarget = true;
+
+            keys = {
+              "datadog-api-key" = {
+                keyCommand = [ "cat" "./secrets/datadog-api-key" ];
+                user = "datadog";
+                group = "datadog";
+              };
+            };
           };
 
           imports = [ ./hosts/fi1.servers.hwlium.com.nix ];
