@@ -37,13 +37,19 @@
       ssl_key_file = "/run/credentials/postgresql.service/key.pem";
     };
 
-    ensureDatabases = [ "hrel" ];
+    ensureDatabases = [ "hrel" "vault" ];
 
     ensureUsers = [
       {
         name = "hrel";
         ensurePermissions = {
           "DATABASE hrel" = "ALL PRIVILEGES";
+        };
+      }
+      {
+        name = "vault";
+        ensurePermissions = {
+          "DATABASE vault" = "ALL PRIVILEGES";
         };
       }
     ];

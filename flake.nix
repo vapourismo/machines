@@ -37,6 +37,10 @@
               "nix-store.sec" = {
                 keyCommand = [ "cat" "./secrets/nix-store.sec" ];
               };
+              "vault-storage.hcl" = {
+                keyCommand = [ "cat" "./secrets/vault-storage.hcl" ];
+                user = "vault";
+              };
             };
           };
 
