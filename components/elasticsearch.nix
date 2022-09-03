@@ -4,6 +4,11 @@
     package = pkgs.elasticsearch7;
   };
 
+  services.kibana = {
+    enable = true;
+    package = pkgs.kibana7;
+  };
+
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
@@ -29,5 +34,21 @@
         '';
       };
     };
+
+    virtualHosts."alpha.kibana.hwlium.com" = {
+      enableACME = true;
+      forceSSL = true;
+
+      basicAuthFile = "/run/keys/kibana-basic";
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${builtins.toString config.services.kibana.port}/";
+        extraConfig = ''
+          proxy_ssl_server_name on;
+        '';
+      };
+    };
   };
+
+  users.users.nginx.extraGroups = [ "keys" ];
 }
