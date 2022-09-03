@@ -51,4 +51,13 @@
   };
 
   users.users.nginx.extraGroups = [ "keys" ];
+
+  services.filebeat = {
+    enable = true;
+    package = pkgs.filebeat7;
+
+    inputs = {
+      journald.id = "everything";
+    };
+  };
 }
