@@ -1,4 +1,4 @@
-{ config, ... }: {
+{config, ...}: {
   imports = [
     ../hetzner/dual-disk-setup.nix
     ../hetzner/networking.nix
