@@ -1,4 +1,9 @@
-{ config, lib, specialArgs, ... }: {
+{
+  config,
+  lib,
+  specialArgs,
+  ...
+}: {
   imports = [
     ./networking.nix
     ./ssh.nix

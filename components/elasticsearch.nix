@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   services.elasticsearch = {
     enable = true;
     package = pkgs.elasticsearch7;
@@ -50,7 +54,7 @@
     };
   };
 
-  users.users.nginx.extraGroups = [ "keys" ];
+  users.users.nginx.extraGroups = ["keys"];
 
   services.filebeat = {
     enable = true;

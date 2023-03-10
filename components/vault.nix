@@ -1,11 +1,11 @@
-{ ... }: {
+{...}: {
   services.vault = {
     enable = true;
     storageBackend = "postgresql";
-    extraSettingsPaths = [ "/run/keys/vault-storage.hcl" ];
+    extraSettingsPaths = ["/run/keys/vault-storage.hcl"];
   };
 
-  users.users.vault.extraGroups = [ "keys" ];
+  users.users.vault.extraGroups = ["keys"];
 
   services.nginx = {
     enable = true;

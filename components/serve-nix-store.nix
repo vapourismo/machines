@@ -1,4 +1,4 @@
-{ config, ... }: {
+{config, ...}: {
   nix = {
     sshServe = {
       enable = true;
@@ -14,7 +14,7 @@
       ];
     };
 
-    settings.trusted-users = [ "nix-ssh" ];
+    settings.trusted-users = ["nix-ssh"];
   };
 
   services.nix-serve = {
@@ -43,5 +43,5 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 443 ];
+  networking.firewall.allowedTCPPorts = [443];
 }

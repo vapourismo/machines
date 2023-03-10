@@ -1,8 +1,8 @@
-{ config, ... }: {
+{config, ...}: {
   services.sshd.enable = true;
   programs.mosh.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [22];
 
   users.users.root.openssh.authorizedKeys.keys = [
     # iKek Pro

@@ -1,11 +1,16 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   security.acme.acceptTerms = true;
 
   security.acme.certs."alpha.database.hwlium.com" = {
     email = "letsencrypt@hwlium.com";
     group = "postgres";
     webroot = "/var/www/alpha.database.hwlium.com";
-    reloadServices = [ "postgresql.service" ];
+    reloadServices = ["postgresql.service"];
   };
 
   services.nginx = {
@@ -37,7 +42,7 @@
       ssl_key_file = "/run/credentials/postgresql.service/key.pem";
     };
 
-    ensureDatabases = [ "hrel" "vault" ];
+    ensureDatabases = ["hrel" "vault"];
 
     ensureUsers = [
       {
@@ -56,8 +61,8 @@
   };
 
   systemd.services.postgresql = {
-    requires = [ "acme-alpha.database.hwlium.com.service" ];
-    after = [ "acme-alpha.database.hwlium.com.service" ];
+    requires = ["acme-alpha.database.hwlium.com.service"];
+    after = ["acme-alpha.database.hwlium.com.service"];
 
     serviceConfig.LoadCredential = [
       "cert.pem:/var/lib/acme/alpha.database.hwlium.com/cert.pem"
@@ -65,5 +70,5 @@
     ];
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 5432 ];
+  networking.firewall.allowedTCPPorts = [80 5432];
 }
