@@ -46,10 +46,26 @@ in {
       enable = true;
       wantedBy = ["multi-user.target"];
       script = ''
-        ${package}/bin/octez-node run --rpc-addr 0.0.0.0:8732
+        ${package}/bin/octez-node run --rpc-addr 127.0.0.1:8732
       '';
     };
   };
 
-  networking.firewall.allowedTCPPorts = [8732];
+  services.nginx = {
+    enable = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+
+    virtualHosts."tezos.hwlium.com" = {
+      enableACME = true;
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8732/";
+        extraConfig = ''
+          proxy_ssl_server_name on;
+        '';
+      };
+    };
+  };
 }
