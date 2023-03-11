@@ -7,6 +7,7 @@
     ../components/postgresql-database.nix
     ../components/vault.nix
     ../components/elasticsearch.nix
+    ../components/tezos.nix
   ];
 
   networking = {
