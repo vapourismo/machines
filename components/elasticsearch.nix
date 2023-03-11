@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   services.elasticsearch = {
@@ -64,4 +65,10 @@
       journald.id = "everything";
     };
   };
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "elasticsearch"
+      "kibana"
+    ];
 }
