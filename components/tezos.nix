@@ -1,10 +1,9 @@
-{pkgs, ...}: let
-  src = pkgs.fetchFromGitLab {
-    owner = "tezos";
-    repo = "tezos";
-    rev = "d50076997e787fc0cd54f0effe4327ac4ad4c86f";
-    sha256 = "DruiHO0wx4GdTo+0cRMOJBYyrDZ6q79MQVSy5eD5JXU=";
-  };
+{
+  pkgs,
+  specialArgs,
+  ...
+}: let
+  src = specialArgs.inputs.tezos;
 
   shell = import (src + /shell.nix);
 
