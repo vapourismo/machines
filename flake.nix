@@ -69,6 +69,7 @@
         buildInputs = with nixpkgs.legacyPackages.${system}; [
           colmena
           alejandra
+          nixos-rebuild
         ];
       };
     });
