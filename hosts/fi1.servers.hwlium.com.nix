@@ -6,7 +6,6 @@
     ../components/serve-nix-store.nix
     ../components/postgresql-database.nix
     ../components/vault.nix
-    ../components/elasticsearch.nix
     ../components/tezos.nix
     ../components/hydra.nix
   ];
