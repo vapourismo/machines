@@ -8,7 +8,6 @@
     ./networking.nix
     ./ssh.nix
     ./nix.nix
-    ./virtualisation.nix
     ./fail2ban.nix
     ./acme.nix
   ];
