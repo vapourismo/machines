@@ -8,6 +8,7 @@
     ../components/vault.nix
     ../components/elasticsearch.nix
     ../components/tezos.nix
+    ../components/hydra.nix
   ];
 
   networking = {
