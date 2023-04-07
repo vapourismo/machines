@@ -3,16 +3,7 @@
   specialArgs,
   ...
 }: let
-  package = (import specialArgs.inputs.tezos).overrideAttrs (old: {
-    buildInputs = (old.buildInputs or []) ++ [pkgs.makeWrapper];
-
-    postFixup = ''
-      ${old.postFixup or ""}
-      for file in $(find $out/bin -type f); do
-        wrapProgram $file --set OPAM_SWITCH_PREFIX ${old.OPAM_SWITCH_PREFIX}
-      done
-    '';
-  });
+  package = import specialArgs.inputs.tezos;
 in {
   systemd.services = {
     tezos-node = {
