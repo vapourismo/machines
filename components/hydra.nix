@@ -1,9 +1,16 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   services.hydra = {
     enable = true;
     listenHost = "localhost";
     hydraURL = "https://hydra.hwlium.com";
     notificationSender = "hydra@hwlium.com";
+    package = pkgs.hydra_unstable.overrideAttrs (old: {
+      patches = (old.patches or []) ++ [./unrestrict-hydra.patch];
+    });
   };
 
   services.nginx = {
