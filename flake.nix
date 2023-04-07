@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     tezos = {
-      url = "gitlab:tezos/tezos";
+      url = "gitlab:tezos/tezos/f9471bdacdad1dfeeffe81d21f91d3b7ee268fa4";
       flake = false;
     };
   };
@@ -65,6 +65,21 @@
       };
     }
     // flake-utils.lib.eachDefaultSystem (system: {
+      packages.tezos = (import inputs.tezos).overrideAttrs (old: {
+        buildInputs =
+          (old.buildInputs or [])
+          ++ [
+            nixpkgs.legacyPackages.${system}.makeWrapper
+          ];
+
+        postFixup = ''
+          ${old.postFixup or ""}
+          for file in $(find $out/bin -type f); do
+            wrapProgram $file --set OPAM_SWITCH_PREFIX ${old.OPAM_SWITCH_PREFIX}
+          done
+        '';
+      });
+
       devShell = nixpkgs.legacyPackages.${system}.mkShell {
         buildInputs = with nixpkgs.legacyPackages.${system}; [
           colmena
