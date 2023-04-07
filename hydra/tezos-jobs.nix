@@ -1,0 +1,3 @@
+{tezos}: {
+  tezos = import tezos;
+}
