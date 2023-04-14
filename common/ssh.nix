@@ -14,4 +14,19 @@
     # NuttenBook Pro
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7vlc902QXTseSF7NsFy3CouUnWFQWDFy1EvS0CRD5q ole@ole-darwin.home"
   ];
+
+  programs.ssh = {
+    extraConfig = ''
+      Host eu.nixbuild.net
+        PubkeyAcceptedKeyTypes ssh-ed25519
+        IdentityFile /root/.ssh/id_ed25519
+    '';
+
+    knownHosts = {
+      nixbuild = {
+        hostNames = ["eu.nixbuild.net"];
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
+      };
+    };
+  };
 }
