@@ -40,17 +40,16 @@
     "tezos": {
       "flake": false,
       "locked": {
-        "lastModified": 1680884884,
-        "narHash": "sha256-QVI8YsFcVzvp7UNmAqoV9D5gIUsJppsu8aliwyz72DU=",
+        "lastModified": 1681562627,
+        "narHash": "sha256-1ocSJYuuZfR0eOKfUtI3z6SZMyu5PailFYk9H3yOyvU=",
         "owner": "tezos",
         "repo": "tezos",
-        "rev": "8b246bca80a07c1220523d9f3c861f6a6f1aa0cc",
+        "rev": "f2db1702d0f45566db5c5480bdc24fa9d15f60e7",
         "type": "gitlab"
       },
       "original": {
         "owner": "tezos",
         "repo": "tezos",
-        "rev": "8b246bca80a07c1220523d9f3c861f6a6f1aa0cc",
         "type": "gitlab"
       }
     }

@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     tezos = {
-      url = "gitlab:tezos/tezos/8b246bca80a07c1220523d9f3c861f6a6f1aa0cc";
+      url = "gitlab:tezos/tezos";
       flake = false;
     };
   };
