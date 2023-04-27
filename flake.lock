@@ -40,11 +40,11 @@
     "tezos": {
       "flake": false,
       "locked": {
-        "lastModified": 1681562627,
-        "narHash": "sha256-1ocSJYuuZfR0eOKfUtI3z6SZMyu5PailFYk9H3yOyvU=",
+        "lastModified": 1682608751,
+        "narHash": "sha256-2Qq4bAqnoYYGrHkm/63PK9ALl/snEhI6VjSSb8y1In0=",
         "owner": "tezos",
         "repo": "tezos",
-        "rev": "f2db1702d0f45566db5c5480bdc24fa9d15f60e7",
+        "rev": "f24026d4545b17457304032d3646ef355c1bd759",
         "type": "gitlab"
       },
       "original": {
