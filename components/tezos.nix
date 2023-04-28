@@ -14,6 +14,7 @@ in {
 
     tezos-accuser = {
       enable = true;
+      wantedBy = ["multi-user.target"];
       wants = ["tezos-node.service"];
       after = ["tezos-node.service"];
       script = ''
