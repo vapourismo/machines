@@ -25,9 +25,7 @@
     fsType = "ext4";
   };
 
-  swapDevices = [
-    {device = "/dev/disk/by-label/swap";}
-  ];
+  swapDevices = [];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
