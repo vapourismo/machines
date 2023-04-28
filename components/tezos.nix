@@ -17,7 +17,7 @@ in {
       wants = ["tezos-node.service"];
       after = ["tezos-node.service"];
       script = ''
-        ${package}/octez-accuser-${protocolSuffix} run --keep-alive
+        ${package}/bin/octez-accuser-${protocolSuffix} run --keep-alive
       '';
     };
   };
