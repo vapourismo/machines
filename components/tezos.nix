@@ -1,9 +1,7 @@
-{
-  pkgs,
-  specialArgs,
-  ...
-}: let
+{specialArgs, ...}: let
   package = import specialArgs.inputs.tezos;
+
+  protocolSuffix = "PtMumbai";
 in {
   systemd.services = {
     tezos-node = {
@@ -11,6 +9,15 @@ in {
       wantedBy = ["multi-user.target"];
       script = ''
         ${package}/bin/octez-node run --rpc-addr 127.0.0.1:8732 --history-mode rolling
+      '';
+    };
+
+    tezos-accuser = {
+      enable = true;
+      wants = ["tezos-node.service"];
+      after = ["tezos-node.service"];
+      script = ''
+        ${package}/octez-accuser-${protocolSuffix} run --keep-alive
       '';
     };
   };
