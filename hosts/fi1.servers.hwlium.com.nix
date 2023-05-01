@@ -8,6 +8,7 @@
     ../components/vault.nix
     ../components/tezos.nix
     ../components/hydra.nix
+    ../components/ole.lol.nix
   ];
 
   networking = {
