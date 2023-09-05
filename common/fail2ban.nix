@@ -10,5 +10,5 @@
     ];
   };
 
-  services.openssh.logLevel = "VERBOSE";
+  services.openssh.settings.LogLevel = "VERBOSE";
 }
