@@ -1,7 +1,7 @@
 {specialArgs, ...}: let
   package = import specialArgs.inputs.tezos;
 
-  protocolSuffix = "PtNairob";
+  protocolSuffix = "Proxford";
 in {
   systemd.services = {
     tezos-node = {
