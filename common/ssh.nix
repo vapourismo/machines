@@ -14,7 +14,7 @@
     # NuttenBook Pro
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7vlc902QXTseSF7NsFy3CouUnWFQWDFy1EvS0CRD5q ole@ole-darwin.home"
     # Work Laptop
-    "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBES0D7Kdt/0JRFmgbpWq18xxCMO28bTCEzwMDB6GIyV1LHGhLuZceWl826fOM3wsta61FzLUGaaNpBOItEJ4Lhc= ole@Oles-MBP.net"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJdlM4k1cHeROz7DBiTZxFpqj9Nesuf8bHM6scnSLXWs ole@Oles-MacBook-Pro.local"
   ];
 
   programs.ssh = {
