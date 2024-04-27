@@ -10,6 +10,7 @@
     ../components/hydra.nix
     ../components/ole.lol.nix
     ../components/zsh.nix
+    ../components/remote-dev-env.nix
   ];
 
   networking = {
