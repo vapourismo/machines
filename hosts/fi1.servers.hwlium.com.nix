@@ -1,4 +1,4 @@
-{config, ...}: {
+{...}: {
   imports = [
     ../hetzner/dual-disk-setup.nix
     ../hetzner/networking.nix
@@ -9,6 +9,7 @@
     ../components/tezos.nix
     ../components/hydra.nix
     ../components/ole.lol.nix
+    ../components/zsh.nix
   ];
 
   networking = {
