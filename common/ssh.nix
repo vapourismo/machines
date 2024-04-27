@@ -1,5 +1,11 @@
 {config, ...}: {
-  services.sshd.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      AcceptEnv = "TERM";
+    };
+  };
+
   programs.mosh.enable = true;
 
   networking.firewall.allowedTCPPorts = [22];
