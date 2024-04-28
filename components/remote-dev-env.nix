@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   users.users.ole = {
     isNormalUser = true;
 
@@ -15,6 +15,8 @@
       # Work Laptop
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJdlM4k1cHeROz7DBiTZxFpqj9Nesuf8bHM6scnSLXWs ole@Oles-MacBook-Pro.local"
     ];
+
+    shell = pkgs.zsh;
   };
 
   users.groups.ole = {};
