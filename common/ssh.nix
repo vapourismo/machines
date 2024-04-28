@@ -1,8 +1,8 @@
-{config, ...}: {
+{...}: {
   services.openssh = {
     enable = true;
     settings = {
-      AcceptEnv = "TERM";
+      AcceptEnv = "TERM TERM_PROGRAM TERM_PROGRAM_VERSION COLORTERM";
     };
   };
 
