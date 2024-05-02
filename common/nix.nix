@@ -6,6 +6,7 @@
 
     registry.nixpkgs.flake = specialArgs.inputs.nixpkgs;
 
+    optimise.automatic = true;
     gc.automatic = true;
   };
 }
